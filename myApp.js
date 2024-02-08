@@ -4,7 +4,7 @@ const mongoURI = process.env.MONGO_URI;
 mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true  });
 mongoose.Promise = Promise;
 //Person schema
-const personSchema = new Schema({
+const personSchema = new mongoose.Schema({
   name: { type: String, required: true },
   age: Number,
   favoriteFoods: [String]

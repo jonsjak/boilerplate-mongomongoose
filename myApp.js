@@ -1,7 +1,8 @@
 require('dotenv').config();
 const mongoose = require('mongoose');
-mongoose.connect(process.env.MONGO_URI);
-
+const mongoURI = process.env.MONGO_URI;
+mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true  });
+mongoose.Promise = Promise;
 //Person schema
 const personSchema = new mongoose.Schema({
   name: {
@@ -12,11 +13,18 @@ const personSchema = new mongoose.Schema({
   favoriteFood: [String]
 })
 
-
-let Person = mongoose.model('Person', personSchema);
+const Person = mongoose.model('Person', personSchema);
 
 const createAndSavePerson = (done) => {
-  done(null /*, data*/);
+  const newPerson = new Person({
+    name: "John Doe",
+    age: 14,
+    favoriteFood: ["Banana", "apple"]
+  });
+  newPerson.save(function(err, data) {
+    if (err) return console.error(err);
+    done(null, data)
+  });
 };
 
 const createManyPeople = (arrayOfPeople, done) => {

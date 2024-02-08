@@ -4,16 +4,13 @@ const mongoURI = process.env.MONGO_URI;
 mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true  });
 mongoose.Promise = Promise;
 //Person schema
-const personSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: true
-  },
+const personSchema = new Schema({
+  name: { type: String, required: true },
   age: Number,
-  favoriteFood: [String]
-})
+  favoriteFoods: [String]
+});
 
-const Person = mongoose.model('Person', personSchema);
+const Person = mongoose.model("Person", personSchema);
 
 const createAndSavePerson = (done) => {
   const newPerson = new Person({
@@ -21,8 +18,10 @@ const createAndSavePerson = (done) => {
     age: 14,
     favoriteFood: ["Banana", "apple"]
   });
-  newPerson.save(function(err, data) {
-    if (err) return console.error(err);
+  newPerson.save((err, data) => {
+    if (err) {
+      return done(err)
+    };
     done(null, data)
   });
 };
